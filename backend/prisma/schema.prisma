@@ -69,7 +69,7 @@ model Admin {
   id       Int       @id @default(autoincrement())
   name     String
   email    String    @unique
-  phone    Int       @unique
+  phone    BigInt    @unique
   password String
   access   Access
   messages Message[]
