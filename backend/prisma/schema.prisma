@@ -13,3 +13,70 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Access {
+  READ
+  READ_WRITE
+}
+
+enum ComplaintCategory {
+  SwimmingPool
+  WaterSupply
+  Parking
+  Plumbing
+  Electrical
+  Lift
+  HouseKeeping
+  GarbageCollector
+  Security
+  ClubHouse
+  Park
+  Generator
+}
+
+enum SubCategory {
+  Gym
+  Theatre
+  BasketBall
+  TableTennis
+  Swings
+}
+
+enum ComplaintStatus {
+  PENDING
+  SOLVED
+  REJECTED
+}
+
+model Message {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  timestamp   DateTime @default(now())
+  read        Boolean  @default(false)
+  author      Admin    @relation(fields: [authorId], references: [id])
+  authorId    Int
+}
+
+model Complain {
+  id                   Int               @id @default(autoincrement())
+  name                 String
+  phoneNumber          Int               @unique
+  emailId              String            @unique
+  blockNumber          Int
+  flatNumber           Int
+  complaintCategory    ComplaintCategory
+  subCategory          SubCategory?
+  complaintDescription String
+  status               ComplaintStatus   @default(PENDING)
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String
+  phone    Int
+  password String
+  access   Access
+  messages Message[]
+}
