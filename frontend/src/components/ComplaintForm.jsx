@@ -27,14 +27,14 @@ const ComplaintForm = () => {
 
   const complaintCategories = [
     { value: '', label: 'Select a category', disabled: true },
-    { value: 'Swimming Pool', label: 'Swimming Pool' },
-    { value: 'Water Supply', label: 'Water Supply' },
+    { value: 'SwimmingPool', label: 'Swimming Pool' },
+    { value: 'WaterSupply', label: 'Water Supply' },
     { value: 'Parking', label: 'Parking' },
     { value: 'Plumbing', label: 'Plumbing' },
     { value: 'Electrical', label: 'Electrical' },
     { value: 'Lift', label: 'Lift' },
-    { value: 'House Keeping', label: 'House Keeping' },
-    { value: 'Garbage Collector', label: 'Garbage Collector' },
+    { value: 'HouseKeeping', label: 'House Keeping' },
+    { value: 'GarbageCollector', label: 'Garbage Collector' },
     { value: 'Security', label: 'Security' },
     { value: 'Clubhouse', label: 'Clubhouse' },
     { value: 'Park', label: 'Park' },
@@ -50,7 +50,7 @@ const ComplaintForm = () => {
     'Park': [
       { value: '', label: 'Select a sub-category', disabled: true },
       { value: 'BasketBall', label: 'BasketBall' },
-      { value: 'Table Tennis', label: 'Table Tennis' },
+      { value: 'TableTennis', label: 'Table Tennis' },
       { value: 'Swings', label: 'Swings' }
     ]
   };
