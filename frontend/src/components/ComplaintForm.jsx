@@ -2,10 +2,12 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import FormField from './FormField';
 import SelectField from './SelectField';
+import ImageCarousel from './ImageCarousel';
 
 const ComplaintForm = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [suboptionsVisible, setSuboptionsVisible] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
   
   const { 
     control, 
@@ -27,14 +29,14 @@ const ComplaintForm = () => {
 
   const complaintCategories = [
     { value: '', label: 'Select a category', disabled: true },
-    { value: 'SwimmingPool', label: 'Swimming Pool' },
-    { value: 'WaterSupply', label: 'Water Supply' },
+    { value: 'Swimming Pool', label: 'Swimming Pool' },
+    { value: 'Water Supply', label: 'Water Supply' },
     { value: 'Parking', label: 'Parking' },
     { value: 'Plumbing', label: 'Plumbing' },
     { value: 'Electrical', label: 'Electrical' },
     { value: 'Lift', label: 'Lift' },
-    { value: 'HouseKeeping', label: 'House Keeping' },
-    { value: 'GarbageCollector', label: 'Garbage Collector' },
+    { value: 'House Keeping', label: 'House Keeping' },
+    { value: 'Garbage Collector', label: 'Garbage Collector' },
     { value: 'Security', label: 'Security' },
     { value: 'Clubhouse', label: 'Clubhouse' },
     { value: 'Park', label: 'Park' },
@@ -50,7 +52,7 @@ const ComplaintForm = () => {
     'Park': [
       { value: '', label: 'Select a sub-category', disabled: true },
       { value: 'BasketBall', label: 'BasketBall' },
-      { value: 'TableTennis', label: 'Table Tennis' },
+      { value: 'Table Tennis', label: 'Table Tennis' },
       { value: 'Swings', label: 'Swings' }
     ]
   };
@@ -61,11 +63,25 @@ const ComplaintForm = () => {
     setSuboptionsVisible(['Clubhouse', 'Park'].includes(category));
   };
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setSelectedImages(prevImages => [...prevImages, ...files]);
+  };
+
+  const removeImage = (index) => {
+    setSelectedImages(prevImages => prevImages.filter((_, i) => i !== index));
+  };
+
   const onSubmit = (data) => {
-    console.log(JSON.stringify(data, null, 2));
+    const formData = {
+      ...data,
+      images: selectedImages
+    };
+    console.log(JSON.stringify(formData, null, 2));
     reset();
     setSelectedCategory('');
     setSuboptionsVisible(false);
+    setSelectedImages([]);
   };
 
   return (
@@ -75,6 +91,37 @@ const ComplaintForm = () => {
           Resident Complaint Form
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {selectedImages.length > 0 && (
+            <ImageCarousel images={selectedImages} />
+          )}
+          
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              Upload Images
+            </label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full px-3 py-2 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-200 border-gray-300 dark:border-gray-600"
+            />
+            {selectedImages.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {selectedImages.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    className="text-xs bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-200 px-2 py-1 rounded-full"
+                  >
+                    Remove Image {index + 1}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={control}

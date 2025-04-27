@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
+import ImageCarousel from './ImageCarousel';
 
 const statusColors = {
   PENDING: 'bg-yellow-50 dark:bg-yellow-900/20',
@@ -16,8 +17,13 @@ const statusTextColors = {
 };
 
 const ComplaintCard = ({ complaint, onStatusChange, onViewDetails, onReport }) => {
+  const sampleImages = [
+    'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg',
+    'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg'
+  ];
+
   return (
-    <div className={`rounded-lg shadow-md p-6 ${statusColors[complaint.status]} transition-colors duration-200 flex flex-col justify-between`}>
+    <div className={`rounded-lg shadow-md p-6 ${statusColors[complaint.status]} transition-colors duration-200`}>
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{complaint.complaintCategory}</h3>
@@ -73,6 +79,8 @@ const ComplaintCard = ({ complaint, onStatusChange, onViewDetails, onReport }) =
           </Transition>
         </Menu>
       </div>
+
+      <ImageCarousel images={sampleImages} />
 
       <div className="mb-4">
         <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">

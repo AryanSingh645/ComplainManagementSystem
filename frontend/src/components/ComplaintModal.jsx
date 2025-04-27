@@ -1,13 +1,19 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { format } from 'date-fns';
+import ImageCarousel from './ImageCarousel';
 
 const ComplaintModal = ({ complaint, onClose }) => {
   if (!complaint) return null;
 
+  const sampleImages = [
+    'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg',
+    'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg'
+  ];
+
   return (
     <Transition appear show={true} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={onClose}>
+      <Dialog as="div" className="relative z-50 max-h-screen" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -31,13 +37,15 @@ const ComplaintModal = ({ complaint, onClose }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all max-h-screen">
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900 dark:text-white mb-4"
                 >
                   Complaint Details
                 </Dialog.Title>
+                
+                <ImageCarousel images={sampleImages} />
                 
                 <div className="space-y-4">
                   <div>
