@@ -2,18 +2,19 @@ import { useState, useEffect } from 'react';
 import ComplaintForm from '../components/ComplaintForm';
 import NotificationsDropdown from '../components/NotificationsDropdown';
 import NotificationModal from '../components/NotificationModal';
+import { useThemeToggle } from '../hooks/ThemeToggle';
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const {darkMode, setDarkMode} = useThemeToggle();
   const [selectedNotification, setSelectedNotification] = useState(null);
 
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [darkMode]);
+  // useEffect(() => {
+  //   if (darkMode) {
+  //     document.documentElement.classList.add('dark');
+  //   } else {
+  //     document.documentElement.classList.remove('dark');
+  //   }
+  // }, [darkMode]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
