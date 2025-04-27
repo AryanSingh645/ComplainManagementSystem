@@ -64,7 +64,9 @@ const ComplaintForm = () => {
   };
 
   const handleImageChange = (e) => {
+    console.log(e.target.files);
     const files = Array.from(e.target.files);
+    console.log(files)
     setSelectedImages(prevImages => [...prevImages, ...files]);
   };
 
@@ -75,9 +77,20 @@ const ComplaintForm = () => {
   const onSubmit = (data) => {
     const formData = {
       ...data,
-      images: selectedImages
+      images: [...selectedImages]
     };
-    console.log(JSON.stringify(formData, null, 2));
+
+    const formDataToSend = new FormData();
+    selectedImages.forEach((image, index) => {
+      formDataToSend.append('gallery', image)
+    })
+    for(let key in formData){
+      if(key === "images") continue;
+      formDataToSend.append(key, formData[key]);
+    }
+
+    console.log('Form Data:', Array.from(formDataToSend.entries()));
+
     reset();
     setSelectedCategory('');
     setSuboptionsVisible(false);

@@ -63,6 +63,7 @@ model Complain {
   subCategory          SubCategory?
   complaintDescription String
   status               ComplaintStatus   @default(PENDING)
+  images               String[]          @default([])
 }
 
 model Admin {
