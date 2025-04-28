@@ -3,6 +3,8 @@ import { useState } from 'react';
 import FormField from './FormField';
 import SelectField from './SelectField';
 import ImageCarousel from './ImageCarousel';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const ComplaintForm = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -29,14 +31,14 @@ const ComplaintForm = () => {
 
   const complaintCategories = [
     { value: '', label: 'Select a category', disabled: true },
-    { value: 'Swimming Pool', label: 'Swimming Pool' },
-    { value: 'Water Supply', label: 'Water Supply' },
+    { value: 'SwimmingPool', label: 'Swimming Pool' },
+    { value: 'WaterSupply', label: 'Water Supply' },
     { value: 'Parking', label: 'Parking' },
     { value: 'Plumbing', label: 'Plumbing' },
     { value: 'Electrical', label: 'Electrical' },
     { value: 'Lift', label: 'Lift' },
-    { value: 'House Keeping', label: 'House Keeping' },
-    { value: 'Garbage Collector', label: 'Garbage Collector' },
+    { value: 'HouseKeeping', label: 'House Keeping' },
+    { value: 'GarbageCollector', label: 'Garbage Collector' },
     { value: 'Security', label: 'Security' },
     { value: 'Clubhouse', label: 'Clubhouse' },
     { value: 'Park', label: 'Park' },
@@ -52,7 +54,7 @@ const ComplaintForm = () => {
     'Park': [
       { value: '', label: 'Select a sub-category', disabled: true },
       { value: 'BasketBall', label: 'BasketBall' },
-      { value: 'Table Tennis', label: 'Table Tennis' },
+      { value: 'TableTennis', label: 'Table Tennis' },
       { value: 'Swings', label: 'Swings' }
     ]
   };
@@ -73,8 +75,7 @@ const ComplaintForm = () => {
   const removeImage = (index) => {
     setSelectedImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
-
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
     const formData = {
       ...data,
       images: [...selectedImages]
@@ -90,6 +91,18 @@ const ComplaintForm = () => {
     }
 
     console.log('Form Data:', Array.from(formDataToSend.entries()));
+
+    try {
+      const response = await axios.post('/api/user/registerComplain', formDataToSend);
+      if(response.data.success){
+        toast.success(response.data.message);
+      }
+      else toast.error(response.data.message);
+      console.log('Response:', response.data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error('Error submitting form. Please refresh!');
+    }
 
     reset();
     setSelectedCategory('');

@@ -4,6 +4,8 @@ import ComplaintCard from './ComplaintCard';
 import ComplaintModal from './ComplaintModal';
 import ReportModal from './ReportModal';
 import ProfileDropdown from './ProfileDropdown';
+import { useAdminDashboard } from '../hooks/AdminDashboard';
+import { useThemeToggle } from '../hooks/ThemeToggle';
 
 const sampleComplaints = [
   {
@@ -170,8 +172,8 @@ const statusFilters = [
   { label: 'Rejected', value: 'REJECTED' },
 ];
 
-const AdminPanel = ({ darkMode, setDarkMode }) => {
-  const [complaints, setComplaints] = useState(sampleComplaints);
+const AdminPanel = () => {
+  // const [complaints, setComplaints] = useState(sampleComplaints);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [complaintForReport, setComplaintForReport] = useState(null);
@@ -179,6 +181,11 @@ const AdminPanel = ({ darkMode, setDarkMode }) => {
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [selectedTime, setSelectedTime] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
+
+  const {complaints, setComplaints} = useAdminDashboard();
+  const {darkMode, setDarkMode} = useThemeToggle();
+
+  console.log("Complaints in Admin Panel:", complaints);
 
   const handleStatusChange = (complaintId, newStatus) => {
     setComplaints(complaints.map(complaint =>
@@ -278,9 +285,9 @@ const AdminPanel = ({ darkMode, setDarkMode }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-        {filteredComplaints.map(complaint => (
+        {filteredComplaints.map((complaint, index) => (
           <ComplaintCard
-            key={complaint.id}
+            key={index}
             complaint={complaint}
             onStatusChange={handleStatusChange}
             onViewDetails={() => setSelectedComplaint(complaint)}

@@ -45,7 +45,7 @@ const ComplaintModal = ({ complaint, onClose }) => {
                   Complaint Details
                 </Dialog.Title>
                 
-                <ImageCarousel images={sampleImages} />
+                <ImageCarousel images={complaint.images} />
                 
                 <div className="space-y-4">
                   <div>

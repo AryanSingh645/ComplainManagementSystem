@@ -80,7 +80,7 @@ const ComplaintCard = ({ complaint, onStatusChange, onViewDetails, onReport }) =
         </Menu>
       </div>
 
-      <ImageCarousel images={sampleImages} />
+      <ImageCarousel images={complaint.images} />
 
       <div className="mb-4">
         <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
