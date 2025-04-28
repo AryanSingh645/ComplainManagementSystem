@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 
 const sendMail = async (emailId, subject, emailType, name, otp = 0, messageObj = {}) => {
-    const regster = ``;
+    const register = ``;
     const message = ``;
 
     const transporter = nodemailer.createTransport({
@@ -15,7 +15,7 @@ const sendMail = async (emailId, subject, emailType, name, otp = 0, messageObj =
         from: process.env.EMAIL,
         to: emailId,
         subject,
-        html: emailType === 'register' ? regster : message,
+        html: emailType === 'register' ? register : message,
     }
     try {
         const info = await transporter.sendMail(mailOptions);

@@ -138,6 +138,13 @@ const loginAdmin = async(req, res) => {
     }
 }
 
+const verifyAdmin = async (req, res) => {
+    return res.status(200).json({
+        success: true,
+        message: "Admin verified successfully",
+    })
+}
+
 const logoutAdmin = async (req, res) => {
     try {
         res
@@ -161,11 +168,48 @@ const logoutAdmin = async (req, res) => {
 }
 
 const getAdminDashBoard = async (req, res) => {
-    
+    try {
+        const dashBoardData = await prisma.complain.findMany();
+        if(!dashBoardData){
+            return res.status(500).json({
+                success: false,
+                message: "Error fetching dashboard data"
+            });
+        }
+        // console.log(dashBoardData.name, "Dashboard Data");
+        const formattedDashBoardData = dashBoardData.map(data => ({
+            name: data.name,
+            phoneNumber: data.phoneNumber.toString(),
+            emailId: data.emailId,
+            blockNumber: data.blockNumber,
+            flatNumber: data.flatNumber,
+            complaintCategory: data.complaintCategory,
+            subCategory: data.subCategory,
+            complaintDescription: data.complaintDescription,
+            images: data.images,
+            status: data.status,
+            timestamp: data.timestamp
+        }));
+
+        return res.status(200).json({
+            success: true,
+            isVerified: true,
+            message: "Dashboard data fetched successfully",
+            dashBoard: formattedDashBoardData
+        });
+    } catch (error) {
+        console.error("Error in getAdminDashBoard:", error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
 }
 
 export {
     registerAdmin,
     loginAdmin,
-    logoutAdmin
+    verifyAdmin,
+    logoutAdmin,
+    getAdminDashBoard
 }
