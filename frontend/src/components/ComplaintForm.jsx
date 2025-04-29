@@ -93,7 +93,7 @@ const ComplaintForm = () => {
     console.log('Form Data:', Array.from(formDataToSend.entries()));
 
     try {
-      const response = await axios.post('https://complainmanagementsystem.onrender.com/api/user/registerComplain', formDataToSend);
+      const response = await axios.post('https://complainmanagementsystem.onrender.com/api/user/registerComplain', formDataToSend, {withCredentials: true});
       if(response.data.success){
         toast.success(response.data.message);
       }
