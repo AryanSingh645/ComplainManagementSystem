@@ -2,9 +2,25 @@ import { Fragment, useEffect } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { useThemeToggle } from "../hooks/ThemeToggle";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const ProfileDropdown = () => {
   const { darkMode, setDarkMode } = useThemeToggle();
+  const navigate = useNavigate();
+  const logout = async () => {
+    try {
+      const response = await axios.get('/api/admin/logout', {withCredentials: true});
+      if(response.data.success){
+        toast.success("Logged out successfully");
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+      toast.error("Please Refresh and try again!");
+    }
+  }
   return (
     <Menu as="div" className="relative inline-block text-left z-10">
       <Menu.Button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -42,6 +58,18 @@ const ProfileDropdown = () => {
                   } w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}
                 >
                   {darkMode ? "🌞 Light Mode" : "🌙 Dark Mode"}
+                </button>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <button
+                  onClick={logout}
+                  className={`${
+                    active ? "bg-gray-100 dark:bg-gray-700" : ""
+                  } w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}
+                >
+                  Logout
                 </button>
               )}
             </Menu.Item>
