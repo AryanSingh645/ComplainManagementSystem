@@ -1,4 +1,4 @@
-import prisma from "@prisma/client"
+import {prisma} from "../prismaClient.js"
 import bcrypt from "bcrypt";
 import {sendMail} from "../utils/sendMail.js"
 import jwt from "jsonwebtoken"

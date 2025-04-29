@@ -1,6 +1,8 @@
-import pkg from "@prisma/client";
-const { PrismaClient } = pkg;
+import {PrismaClient} from "../generated/prisma/index.js";
+// const { PrismaClient } = pkg;
 
+console.log("Initializing Prisma client...");
 const prisma = new PrismaClient();
+console.log("Prisma client initialized!");
 
-export default prisma;
+export {prisma};

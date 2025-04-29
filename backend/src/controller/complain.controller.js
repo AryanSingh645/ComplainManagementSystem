@@ -1,4 +1,4 @@
-import prisma  from "@prisma/client";
+import {prisma}  from "../prismaClient.js";
 import { sendMail } from "../utils/sendMail.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
