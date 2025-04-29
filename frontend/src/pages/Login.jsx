@@ -27,6 +27,7 @@ const Login = () => {
   const onSubmit = async(data) => {
     try {
         const response = await axios.post('/api/admin/login', data);
+        console.log(response.data, "login page");
         if(response.data.success){
             toast.success(response.data.message);
             navigate("/admin");
