@@ -26,7 +26,7 @@ const Login = () => {
   const navigate = useNavigate();
   const onSubmit = async(data) => {
     try {
-        const response = await axios.post('https://complainmanagementsystem.onrender.com/api/admin/login', data);
+        const response = await axios.post('https://complainmanagementsystem.onrender.com/api/admin/login', data, {withCredentials: true});
         console.log(response.data, "login page");
         if(response.data.success){
             toast.success(response.data.message);
