@@ -13,7 +13,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const verifyUser = async() => {
-      const response = await axios.get('/api/admin/getDashboardData', {withCredentials: true})
+      const response = await axios.get('https://complainmanagementsystem.onrender.com/api/admin/getDashboardData', {withCredentials: true})
       console.log(response.data, "response in admin dashboard");
       if(response.data.success){
         setComplaints(response.data.dashBoard);

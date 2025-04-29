@@ -11,7 +11,7 @@ const ProfileDropdown = () => {
   const navigate = useNavigate();
   const logout = async () => {
     try {
-      const response = await axios.get('/api/admin/logout', {withCredentials: true});
+      const response = await axios.get('https://complainmanagementsystem.onrender.com/api/admin/logout', {withCredentials: true});
       if(response.data.success){
         toast.success("Logged out successfully");
         navigate("/login");

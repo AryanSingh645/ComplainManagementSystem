@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const verifyUser = async () => {
       try {
-        const response = await axios.get("/api/admin/verify", {
+        const response = await axios.get("https://complainmanagementsystem.onrender.com/api/admin/verify", {
           withCredentials: true,
         });
         console.log(response, "response in protected route");
