@@ -74,6 +74,7 @@ const registerAdmin = async (req, res) => {
 
 const loginAdmin = async(req, res) => {
     try {
+        console.log(req.body, "Login body");
         const {email, password} = req.body;
         if(!email || !password){
             return res.status(400).json({
