@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import ComplaintCard from './ComplaintCard';
 import ComplaintModal from './ComplaintModal';
@@ -188,6 +188,7 @@ const AdminPanel = () => {
   console.log("Complaints in Admin Panel:", complaints);
 
   const handleStatusChange = (complaintId, newStatus) => {
+    console.log(complaintId, "complaintId in handleStatusChange");
     setComplaints(complaints.map(complaint =>
       complaint.id === complaintId ? { ...complaint, status: newStatus } : complaint
     ));
@@ -226,11 +227,14 @@ const AdminPanel = () => {
       }
 
       // Ensure no duplicate complaints are added
-      const isUnique = self.findIndex(c => c.id === complaint.id) === index;
+      // const isUnique = self.findIndex(c => c.id === complaint.id) === index;
 
-      return matchesSearch && matchesCategory && matchesStatus && matchesTime && isUnique;
+      return matchesSearch && matchesCategory && matchesStatus && matchesTime;
     });
   }, [complaints, searchQuery, selectedCategory, selectedStatus, selectedTime]);
+  useEffect(() => {
+    console.log("Filtered Complaints:", filteredComplaints);
+  }, [filteredComplaints])
 
   return (
     <div className="max-w-7xl mx-auto">
