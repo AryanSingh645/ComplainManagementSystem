@@ -39,7 +39,7 @@ const registerComplain = async (req, res) => {
       }
     }
 
-    let galleryLocalPaths;
+    let galleryLocalPaths = [];
     if (
       req.files &&
       Array.isArray(req.files.gallery) &&

@@ -5,7 +5,7 @@ import cors from 'cors';
 const app = express();
 
 app.use(cors({
-    origin: "https://complainmanagementsystem-1.onrender.com",
+    origin: ["https://complainmanagementsystem-1.onrender.com", "http://localhost:5173"],
     credentials: true
 }))
 
