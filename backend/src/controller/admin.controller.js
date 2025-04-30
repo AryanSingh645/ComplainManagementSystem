@@ -179,6 +179,7 @@ const getAdminDashBoard = async (req, res) => {
         }
         // console.log(dashBoardData.name, "Dashboard Data");
         const formattedDashBoardData = dashBoardData.map(data => ({
+            id: data.id,
             name: data.name,
             phoneNumber: data.phoneNumber.toString(),
             emailId: data.emailId,
