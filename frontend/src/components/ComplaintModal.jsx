@@ -58,20 +58,20 @@ const ComplaintModal = ({ complaint, onClose }) => {
                     <p className="text-gray-900 dark:text-white">{complaint.complaintDescription}</p>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
+                  <div className="grid grid-cols-12 gap-4">
+                    <div className="col-span-8">
                       <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Name</h4>
                       <p className="text-gray-900 dark:text-white text-wrap">{complaint.name}</p>
                     </div>
-                    <div>
+                    <div className="col-span-4">
                       <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Phone</h4>
                       <p className="text-gray-900 dark:text-white">{complaint.phoneNumber}</p>
                     </div>
-                    <div>
+                    <div className="col-span-8">
                       <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Email</h4>
-                      <p className="text-gray-900 dark:text-white text-wrap">{complaint.emailId}</p>
+                      <p className="text-gray-900 dark:text-white text-wrap break-words">{complaint.emailId}</p>
                     </div>
-                    <div>
+                    <div className="col-span-4">
                       <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Location</h4>
                       <p className="text-gray-900 dark:text-white">Block {complaint.blockNumber}, Flat {complaint.flatNumber}</p>
                     </div>
