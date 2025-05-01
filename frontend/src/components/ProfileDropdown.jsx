@@ -4,14 +4,14 @@ import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { useThemeToggle } from "../hooks/ThemeToggle";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import axios from "axios";
+import { axiosInstance } from "../utils/axiosInstance";
 
 const ProfileDropdown = () => {
   const { darkMode, setDarkMode } = useThemeToggle();
   const navigate = useNavigate();
   const logout = async () => {
     try {
-      const response = await axios.get('https://complainmanagementsystem.onrender.com/api/admin/logout', {withCredentials: true});
+      const response = await axiosInstance.get('/api/admin/logout');
       if(response.data.success){
         toast.success("Logged out successfully");
         navigate("/login");

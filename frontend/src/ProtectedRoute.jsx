@@ -1,7 +1,7 @@
-import axios from "axios";
 import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "./utils/axiosInstance";
 
 const ProtectedRoute = ({ children }) => {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -10,9 +10,7 @@ const ProtectedRoute = ({ children }) => {
     const verifyUser = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get("https://complainmanagementsystem.onrender.com/api/admin/verify", {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.get("/api/admin/verify");
         console.log(response, "response in protected route");
         if (!response.data.success) {
           console.log("not verified user");

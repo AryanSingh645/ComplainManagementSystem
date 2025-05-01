@@ -16,7 +16,7 @@ const statusTextColors = {
   SOLVED: 'text-green-800 dark:text-green-200',
 };
 
-const ComplaintCard = ({ complaint, onStatusChange, onViewDetails, onReport }) => {
+const ComplaintCard = ({ complaint, onViewDetails, onReport }) => {
   const sampleImages = [
     'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg',
     'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg'
@@ -80,7 +80,7 @@ const ComplaintCard = ({ complaint, onStatusChange, onViewDetails, onReport }) =
         </Menu>
       </div>
 
-      <ImageCarousel images={complaint.images} />
+      {complaint?.images && <ImageCarousel images={complaint?.images} />}
 
       <div className="mb-4">
         <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">

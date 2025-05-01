@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useThemeToggle } from "../hooks/ThemeToggle";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { axiosInstance } from "../utils/axiosInstance";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,17 +24,19 @@ const Login = () => {
   });
   const navigate = useNavigate();
   const onSubmit = async(data) => {
+    let toastMessage;
     try {
-        const response = await axios.post('https://complainmanagementsystem.onrender.com/api/admin/login', data, {withCredentials: true});
+        const response = await axiosInstance.post('/api/admin/login', data);
         console.log(response.data, "login page");
+        toastMessage = response.data.message;
         if(response.data.success){
-            toast.success(response.data.message);
+            toast.success(toastMessage);
             navigate("/admin");
         }
-        else toast.error(response.data.message);
+        else toast.error(toastMessage);
     } catch (error) {
         console.error('Error submitting form:', error);
-        toast.error('Error submitting form. Please refresh!');
+        toast.error(toastMessage);
     }finally{
         reset();
     }

@@ -45,7 +45,7 @@ const ComplaintModal = ({ complaint, onClose }) => {
                   Complaint Details
                 </Dialog.Title>
                 
-                <ImageCarousel images={complaint.images} />
+                {complaint?.images && <ImageCarousel images={complaint?.images} />}
                 
                 <div className="space-y-4">
                   <div>
@@ -65,11 +65,11 @@ const ComplaintModal = ({ complaint, onClose }) => {
                     </div>
                     <div className="col-span-4">
                       <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Phone</h4>
-                      <p className="text-gray-900 dark:text-white">{complaint.phoneNumber}</p>
+                      <p className="text-gray-900 dark:text-white">{complaint?.phoneNumber}</p>
                     </div>
                     <div className="col-span-8">
                       <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Email</h4>
-                      <p className="text-gray-900 dark:text-white text-wrap break-words">{complaint.emailId}</p>
+                      <p className="text-gray-900 dark:text-white text-wrap break-words">{complaint?.emailId}</p>
                     </div>
                     <div className="col-span-4">
                       <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Location</h4>

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import FormField from './FormField';
 import SelectField from './SelectField';
 import ImageCarousel from './ImageCarousel';
-import axios from 'axios';
+import {axiosInstance} from "../utils/axiosInstance.js"
 import toast from 'react-hot-toast';
 
 const ComplaintForm = () => {
@@ -93,7 +93,7 @@ const ComplaintForm = () => {
     console.log('Form Data:', Array.from(formDataToSend.entries()));
 
     try {
-      const response = await axios.post('https://complainmanagementsystem.onrender.com/api/user/registerComplain', formDataToSend, {withCredentials: true});
+      const response = await axiosInstance.post('/api/user/registerComplain', formDataToSend);
       if(response.data.success){
         toast.success(response.data.message);
       }

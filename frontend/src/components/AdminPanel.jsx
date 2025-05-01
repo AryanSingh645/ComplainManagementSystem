@@ -6,6 +6,8 @@ import ReportModal from './ReportModal';
 import ProfileDropdown from './ProfileDropdown';
 import { useAdminDashboard } from '../hooks/AdminDashboard';
 import { useThemeToggle } from '../hooks/ThemeToggle';
+import toast from 'react-hot-toast';
+import { axiosInstance } from '../utils/axiosInstance';
 
 const sampleComplaints = [
   {
@@ -187,12 +189,23 @@ const AdminPanel = () => {
 
   console.log("Complaints in Admin Panel:", complaints);
 
-  const handleStatusChange = (complaintId, newStatus) => {
+  const handleStatusChange = async (complaintId, newStatus) => {
     console.log(complaintId, "complaintId in handleStatusChange");
-    
-    setComplaints(complaints.map(complaint =>
-      complaint.id === complaintId ? { ...complaint, status: newStatus } : complaint
-    ));
+    try {
+      const response = await axiosInstance.post('/api/admin/updateStatus', {complaintId, newStatus});
+      if(response.data.success){
+        toast.success(response.data.message);
+        setComplaints(complaints.map(complaint =>
+          complaint.id === complaintId ? { ...complaint, status: newStatus } : complaint
+        ));
+      }
+      else{
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error changing status:", error);
+      toast.error("Error changing status");
+    }
   };
 
   const handleReport = (complaintId, reportType, message) => {
