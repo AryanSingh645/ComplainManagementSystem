@@ -40,7 +40,7 @@ const ComplaintForm = () => {
     { value: 'HouseKeeping', label: 'House Keeping' },
     { value: 'GarbageCollector', label: 'Garbage Collector' },
     { value: 'Security', label: 'Security' },
-    { value: 'Clubhouse', label: 'Clubhouse' },
+    { value: 'ClubHouse', label: 'Clubhouse' },
     { value: 'Park', label: 'Park' },
     { value: 'Generator', label: 'Generator' }
   ];
