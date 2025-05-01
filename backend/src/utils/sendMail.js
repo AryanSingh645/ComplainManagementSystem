@@ -1,6 +1,9 @@
 import nodemailer from 'nodemailer';
 
 const sendMail = async (emailId, subject, emailType, name, otp = 0, messageObj = {}) => {
+    if(!emailId || (emailId && emailId.trim().length == 0)){
+        return;
+    }
     const register = ``;
     const message = ``;
 

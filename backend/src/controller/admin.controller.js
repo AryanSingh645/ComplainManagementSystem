@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken"
 const registerAdmin = async (req, res) => {
     try {
         const {email, password, name, phone, access} = req.body;
+        console.log(req.body, "Register body");
         if(!email || !password || !name || !phone || !access){
             return res.status(400).json({
                 success: false,
@@ -181,7 +182,7 @@ const getAdminDashBoard = async (req, res) => {
         const formattedDashBoardData = dashBoardData.map(data => ({
             id: data.id,
             name: data.name,
-            phoneNumber: data.phoneNumber.toString(),
+            phoneNumber: data.phoneNumber?.toString(),
             emailId: data.emailId,
             blockNumber: data.blockNumber,
             flatNumber: data.flatNumber,
@@ -208,10 +209,77 @@ const getAdminDashBoard = async (req, res) => {
     }
 }
 
+const changeStatus = async (req, res) => {
+    try {
+      const { complaintId, newStatus } = req.body;
+      const userAccess = req.userAccess;
+      if(userAccess !== "READ_WRITE"){
+          return res.status(403).json({
+              success: false,
+              message: "You are not authorized to change the status of this complain"
+          });
+      }
+      if(!complaintId || !newStatus){
+          return res.status(400).json({
+              success: false,
+              message: "Complaint ID and new status are required"
+          });
+      }
+      const complain = await prisma.complain.findUnique({
+        where: {
+          id: complaintId
+        }
+      });
+      if(!complain){
+          return res.status(404).json({
+              success: false,
+              message: "Complain not found"
+          });
+      }
+      const updatedComplain = await prisma.complain.update({
+        data: {
+          status: newStatus
+        },
+        where: {
+          id: complaintId
+        }
+      })
+      if(!updatedComplain){
+        return res.status(500).json({
+          success: false,
+          message: "Error updating complain"
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Complain status updated successfully",
+        complain: {
+          id: updatedComplain.id,
+          name: updatedComplain.name,
+          phoneNumber: updatedComplain.phoneNumber.toString(),
+          emailId: updatedComplain.emailId,
+          blockNumber: updatedComplain.blockNumber,
+          flatNumber: updatedComplain.flatNumber,
+          complaintCategory: updatedComplain.complaintCategory,
+          subCategory: updatedComplain.subCategory,
+          complaintDescription: updatedComplain.complaintDescription,
+          images: updatedComplain.images
+        }
+      })
+    } catch (error) {
+      console.error("Error in changeStatus:", error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  }
+
 export {
     registerAdmin,
     loginAdmin,
     verifyAdmin,
     logoutAdmin,
-    getAdminDashBoard
+    getAdminDashBoard,
+    changeStatus
 }

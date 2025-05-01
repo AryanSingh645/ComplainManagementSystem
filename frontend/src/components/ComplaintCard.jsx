@@ -46,7 +46,7 @@ const ComplaintCard = ({ complaint, onStatusChange, onViewDetails, onReport }) =
           >
             <Menu.Items className="absolute right-0 mt-2 w-56 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
               <div className="py-1">
-                <Menu.Item>
+                {/* <Menu.Item>
                   <div className="px-4 py-2">
                     <label className="block text-sm text-gray-700 dark:text-gray-200 mb-1">
                       Status
@@ -61,7 +61,7 @@ const ComplaintCard = ({ complaint, onStatusChange, onViewDetails, onReport }) =
                       <option value="SOLVED">Solved</option>
                     </select>
                   </div>
-                </Menu.Item>
+                </Menu.Item> */}
                 <Menu.Item>
                   {({ active }) => (
                     <button

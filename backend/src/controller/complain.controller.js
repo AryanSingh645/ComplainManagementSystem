@@ -17,8 +17,6 @@ const registerComplain = async (req, res) => {
 
     if (
       !name ||
-      !phoneNumber ||
-      !emailId ||
       !blockNumber ||
       !flatNumber ||
       !complaintCategory ||
@@ -47,25 +45,26 @@ const registerComplain = async (req, res) => {
     ) {
       galleryLocalPaths = req.files.gallery;
     }
-
     let images = [];
-    for(const gallerPath of galleryLocalPaths){
-        const image = await uploadOnCloudinary(gallerPath.path);
-        if(!image){
-            return res.status(500).json({
-                success: false,
-                message: "Error uploading image"
-            });
-        } else {
-            images.push(image.url);
-        }
+    if(Array.isArray(galleryLocalPaths) && galleryLocalPaths.length > 0){
+      for(const gallerPath of galleryLocalPaths){
+          const image = await uploadOnCloudinary(gallerPath.path);
+          if(!image){
+              return res.status(500).json({
+                  success: false,
+                  message: "Error uploading image"
+              });
+          } else {
+              images.push(image.url);
+          }
+      }
     }
 
     const newComplain = await prisma.complain.create({
       data: {
         name,
-        phoneNumber: BigInt(phoneNumber),
-        emailId,
+        phoneNumber: phoneNumber ? BigInt(phoneNumber) : null,
+        emailId: (emailId && emailId.trim().length > 0) ? emailId.trim() : null,
         blockNumber: Number(blockNumber),
         flatNumber: Number(flatNumber),
         complaintCategory,
@@ -89,7 +88,7 @@ const registerComplain = async (req, res) => {
       complain: {
         id: newComplain.id,
         name: newComplain.name,
-        phoneNumber: newComplain.phoneNumber.toString(),
+        phoneNumber: newComplain.phoneNumber?.toString(),
         emailId: newComplain.emailId,
         blockNumber: newComplain.blockNumber,
         flatNumber: newComplain.flatNumber,

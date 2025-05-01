@@ -176,7 +176,7 @@ const AdminPanel = () => {
   // const [complaints, setComplaints] = useState(sampleComplaints);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
   const [reportModalOpen, setReportModalOpen] = useState(false);
-  const [complaintForReport, setComplaintForReport] = useState(null);
+  const [complaintForReport, setComplaintForReport] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [selectedTime, setSelectedTime] = useState('all');
@@ -189,6 +189,7 @@ const AdminPanel = () => {
 
   const handleStatusChange = (complaintId, newStatus) => {
     console.log(complaintId, "complaintId in handleStatusChange");
+    
     setComplaints(complaints.map(complaint =>
       complaint.id === complaintId ? { ...complaint, status: newStatus } : complaint
     ));
@@ -293,7 +294,7 @@ const AdminPanel = () => {
           <ComplaintCard
             key={index}
             complaint={complaint}
-            onStatusChange={handleStatusChange}
+            // onStatusChange={handleStatusChange}
             onViewDetails={() => setSelectedComplaint(complaint)}
             onReport={() => {
               setComplaintForReport(complaint);
@@ -312,7 +313,8 @@ const AdminPanel = () => {
         isOpen={reportModalOpen}
         onClose={() => setReportModalOpen(false)}
         onSubmit={handleReport}
-        complaintId={complaintForReport?.id}
+        complaint={complaintForReport}
+        onStatusChange={handleStatusChange}
       />
     </div>
   );

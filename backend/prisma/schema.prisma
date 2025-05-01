@@ -56,8 +56,8 @@ model Message {
 model Complain {
   id                   Int               @id @default(autoincrement())
   name                 String
-  phoneNumber          BigInt            
-  emailId              String            
+  phoneNumber          BigInt?            
+  emailId              String?            
   blockNumber          Int
   flatNumber           Int
   complaintCategory    ComplaintCategory

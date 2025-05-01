@@ -1,5 +1,5 @@
 import {Router} from "express"
-import { getAdminDashBoard, loginAdmin, logoutAdmin, registerAdmin, verifyAdmin } from "../controller/admin.controller.js";
+import { changeStatus, getAdminDashBoard, loginAdmin, logoutAdmin, registerAdmin, verifyAdmin } from "../controller/admin.controller.js";
 import verifyUser from "../middleware/auth.middleware.js";
 
 const router = Router();
@@ -8,5 +8,6 @@ router.route(`/login`).post(loginAdmin);
 router.route(`/verify`).get(verifyUser,verifyAdmin);
 router.route('/logout').get(verifyUser, logoutAdmin);
 router.route('/getDashboardData').get(verifyUser, getAdminDashBoard);
+router.route('/updateStatus').post(verifyUser, changeStatus);
 
 export default router;

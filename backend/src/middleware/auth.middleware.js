@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import crypto from "crypto"
+import { prisma } from "../prismaClient.js";
 const verifyUser = async (req, res, next) => {
     try {
         const token = req.cookies?.access_token || req.header("Authorization")?.replace("Bearer ","");
@@ -20,6 +20,18 @@ const verifyUser = async (req, res, next) => {
         }
         const { id, access } = decodedToken;
         console.log("Decoded Token:", decodedToken);
+        const user = await prisma.admin.findUnique({
+            where: {
+                id
+            }
+        });
+        if(!user){
+            return res.status(401).json({
+                isVerified: false,
+                success: false,
+                message: "User not found!"
+            })
+        }
         req.userId = id;
         req.userAccess = access;
         next();

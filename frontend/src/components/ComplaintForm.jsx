@@ -162,7 +162,6 @@ const ComplaintForm = () => {
               name="phoneNumber"
               label="Phone Number"
               rules={{ 
-                required: 'Phone number is required',
                 pattern: {
                   value: /^[0-9]{10}$/,
                   message: 'Please enter a valid 10-digit phone number'
@@ -176,7 +175,6 @@ const ComplaintForm = () => {
               name="emailId"
               label="Email Id"
               rules={{ 
-                required: 'Email is required',
                 pattern: {
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                   message: 'Please enter a valid email address'
