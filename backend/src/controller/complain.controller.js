@@ -80,7 +80,15 @@ const registerComplain = async (req, res) => {
             message: "Error creating complain"
         });
     }
-    const mailInfo = await sendMail(emailId, "Complain Registered", "complain", name, null, {});
+    const mailInfo = await sendMail(emailId, "register", {
+      name: newComplain.name,
+      id: newComplain.id,
+      complaintCategory: newComplain.complaintCategory,
+      subCategory: newComplain.subCategory,
+      blockNumber: newComplain.blockNumber,
+      flatNumber: newComplain.flatNumber,
+      description: newComplain.complaintDescription,
+    });
     
     return res.status(201).json({
       success: true,

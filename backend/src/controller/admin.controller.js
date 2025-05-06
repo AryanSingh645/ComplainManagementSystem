@@ -117,7 +117,7 @@ const loginAdmin = async(req, res) => {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            maxAge: 60 * 60 * 24 * 30
+            maxAge: 60 * 60 * 24 * 30 * 1000
         })
         .json({
             success: true,
@@ -143,6 +143,12 @@ const loginAdmin = async(req, res) => {
 const verifyAdmin = async (req, res) => {
     return res.status(200).json({
         success: true,
+        admin: {
+            id: req.user.id,
+            access: req.user.access,
+            name: req.user.name,
+            email: req.user.email
+        },
         message: "Admin verified successfully",
     })
 }
@@ -212,7 +218,7 @@ const getAdminDashBoard = async (req, res) => {
 const changeStatus = async (req, res) => {
     try {
       const { complaintId, newStatus } = req.body;
-      const userAccess = req.userAccess;
+      const userAccess = req.user.access;
       if(userAccess !== "READ_WRITE"){
           return res.status(403).json({
               success: false,
@@ -250,6 +256,7 @@ const changeStatus = async (req, res) => {
           message: "Error updating complain"
         });
       }
+    //   const mailInfo = await sendMail()
       return res.status(200).json({
         success: true,
         message: "Complain status updated successfully",
@@ -275,11 +282,59 @@ const changeStatus = async (req, res) => {
     }
   }
 
+  const pingAdmins = async (req, res) => {
+    try {
+        const {message, timestamp, complaintCategory, subCategory, complaintDescription, blockNumber, flatNumber } = req.body;
+        if(!message){
+            return res.status(400).json({
+                success: false,
+                message: "Message is required"
+            });
+        }
+        const currAdminEmail = req.user.email;
+        const admins = await prisma.admin.findMany();
+
+        console.log(admins, "Admins");
+        
+        if(!admins){
+            return res.status(500).json({
+                success: false,
+                message: "Error fetching admins"
+            });
+        }
+        const filteredAdmins = admins.filter(admin => admin.email !== currAdminEmail);
+
+        for(let admin of filteredAdmins){
+            const mailInfo = await sendMail(admin.email, "pingAdmins", {
+                sender: req.user.name,
+                message,
+                timestamp,
+                complaintCategory,
+                subCategory: subCategory ? subCategory : null,
+                complaintDescription,
+                flatNumber,
+                blockNumber
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Message sent to all admins"
+        });
+    } catch (error) {
+        console.error("Error in pingAdmins:", error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+  }
+
 export {
     registerAdmin,
     loginAdmin,
     verifyAdmin,
     logoutAdmin,
     getAdminDashBoard,
-    changeStatus
+    changeStatus,
+    pingAdmins
 }
