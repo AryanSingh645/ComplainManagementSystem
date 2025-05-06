@@ -32,8 +32,16 @@ const verifyUser = async (req, res, next) => {
                 message: "User not found!"
             })
         }
-        req.userId = id;
-        req.userAccess = access;
+        
+        if (!req.user) {
+            req.user = {}; // Initialize req.user as an empty object
+        }
+        req.user.id = id;
+        req.user.name = user.name;
+        req.user.access = access;
+        req.user.email = user.email;
+        req.user.phone = user.phone.toString();
+
         next();
     } catch (error) {
         console.error("Error verifying user:", error);
