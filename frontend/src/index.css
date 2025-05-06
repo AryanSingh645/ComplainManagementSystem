@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@plugin "daisyui";
+
 @layer base {
   body {
     @apply min-h-screen min-w-[320px] m-0;

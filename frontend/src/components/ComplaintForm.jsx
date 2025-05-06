@@ -5,11 +5,13 @@ import SelectField from './SelectField';
 import ImageCarousel from './ImageCarousel';
 import {axiosInstance} from "../utils/axiosInstance.js"
 import toast from 'react-hot-toast';
+import {Loader2} from "lucide-react"
 
 const ComplaintForm = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [suboptionsVisible, setSuboptionsVisible] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   
   const { 
     control, 
@@ -93,6 +95,7 @@ const ComplaintForm = () => {
     console.log('Form Data:', Array.from(formDataToSend.entries()));
 
     try {
+      setIsLoading(true);
       const response = await axiosInstance.post('/api/user/registerComplain', formDataToSend);
       if(response.data.success){
         toast.success(response.data.message);
@@ -102,6 +105,8 @@ const ComplaintForm = () => {
     } catch (error) {
       console.error('Error submitting form:', error);
       toast.error('Error submitting form. Please refresh!');
+    }finally{
+      setIsLoading(false);
     }
 
     reset();
@@ -153,7 +158,10 @@ const ComplaintForm = () => {
               control={control}
               name="name"
               label="Name"
-              rules={{ required: 'Name is required' }}
+              rules={{ 
+                required: 'Name is required',
+                validate: value => value.trim() !== '' || 'Name cannot be empty spaces'
+              }}
               error={errors.name}
             />
             
@@ -187,7 +195,10 @@ const ComplaintForm = () => {
               control={control}
               name="blockNumber"
               label="Block Number"
-              rules={{ required: 'Block number is required' }}
+              rules={{ 
+                required: 'Block number is required',
+                validate: value => value.trim() !== '' || 'Block number cannot be empty spaces'
+              }}
               error={errors.blockNumber}
             />
             
@@ -195,7 +206,10 @@ const ComplaintForm = () => {
               control={control}
               name="flatNumber"
               label="Flat Number"
-              rules={{ required: 'Flat number is required' }}
+              rules={{ 
+                required: 'Flat number is required',
+                validate: value => value.trim() !== '' || 'Flat number cannot be empty spaces'
+              }}
               error={errors.flatNumber}
             />
           </div>
@@ -229,7 +243,8 @@ const ComplaintForm = () => {
             </label>
             <textarea
               {...control.register('complaintDescription', {
-                required: 'Please provide a description of your complaint'
+                required: 'Please provide a description of your complaint',
+                validate: value => value.trim() !== '' || 'Description cannot be empty spaces'
               })}
               className={`w-full h-32 px-3 py-2 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-200 ${
                 errors.complaintDescription ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
@@ -244,8 +259,7 @@ const ComplaintForm = () => {
             <button
               type="submit"
               className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
-            >
-              Submit Complaint
+            >{isLoading ? <Loader2 className='animate-spin'/> : ('Submit Complaint')}
             </button>
           </div>
         </form>

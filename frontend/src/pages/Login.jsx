@@ -4,11 +4,13 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { axiosInstance } from "../utils/axiosInstance";
+import { Loader2 } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
@@ -26,6 +28,7 @@ const Login = () => {
   const onSubmit = async(data) => {
     let toastMessage;
     try {
+        setIsLoading(true);
         const response = await axiosInstance.post('/api/admin/login', data);
         console.log(response.data, "login page");
         toastMessage = response.data.message;
@@ -38,6 +41,7 @@ const Login = () => {
         console.error('Error submitting form:', error);
         toast.error(toastMessage);
     }finally{
+        setIsLoading(false);
         reset();
     }
   };
@@ -129,7 +133,7 @@ const Login = () => {
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              Sign in
+              {isLoading ? <Loader2 className="animate-spin"/> : 'Login'}
             </button>
           </div>
         </form>

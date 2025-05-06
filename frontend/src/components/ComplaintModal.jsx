@@ -52,6 +52,10 @@ const ComplaintModal = ({ complaint, onClose }) => {
                     <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Category</h4>
                     <p className="text-gray-900 dark:text-white">{complaint.complaintCategory}</p>
                   </div>
+                  {complaint.subCategory && <div>
+                    <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Sub Category</h4>
+                    <p className="text-gray-900 dark:text-white">{complaint.subCategory}</p>
+                  </div>}
 
                   <div className='max-h-64 overflow-y-scroll'>
                     <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Description</h4>

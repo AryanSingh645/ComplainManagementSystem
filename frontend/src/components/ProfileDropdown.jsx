@@ -1,12 +1,15 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { useThemeToggle } from "../hooks/ThemeToggle";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../utils/axiosInstance";
+import { Bell, User } from "lucide-react";
+import NotificationsDropdown from "./NotificationsDropdown";
+import NotificationModal from "./NotificationModal";
 
-const ProfileDropdown = () => {
+const ProfileDropdown = ({setSelectedNotification}) => {
   const { darkMode, setDarkMode } = useThemeToggle();
   const navigate = useNavigate();
   const logout = async () => {
@@ -45,7 +48,8 @@ const ProfileDropdown = () => {
                     active ? "bg-gray-100 dark:bg-gray-700" : ""
                   } w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}
                 >
-                  View Profile
+                  <NotificationsDropdown onNotificationClick={setSelectedNotification} />
+                  
                 </button>
               )}
             </Menu.Item>

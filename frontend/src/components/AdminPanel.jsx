@@ -1,13 +1,15 @@
-import { useState, useMemo, useEffect } from 'react';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import ComplaintCard from './ComplaintCard';
-import ComplaintModal from './ComplaintModal';
-import ReportModal from './ReportModal';
-import ProfileDropdown from './ProfileDropdown';
-import { useAdminDashboard } from '../hooks/AdminDashboard';
-import { useThemeToggle } from '../hooks/ThemeToggle';
-import toast from 'react-hot-toast';
-import { axiosInstance } from '../utils/axiosInstance';
+import { useState, useMemo, useEffect } from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import ComplaintCard from "./ComplaintCard";
+import ComplaintModal from "./ComplaintModal";
+import ReportModal from "./ReportModal";
+import ProfileDropdown from "./ProfileDropdown";
+import { useAdminDashboard } from "../hooks/AdminDashboard";
+import { useThemeToggle } from "../hooks/ThemeToggle";
+import toast from "react-hot-toast";
+import { axiosInstance } from "../utils/axiosInstance";
+import { set } from "date-fns";
+import NotificationModal from "./NotificationModal";
 
 const sampleComplaints = [
   {
@@ -18,7 +20,8 @@ const sampleComplaints = [
     blockNumber: "A",
     flatNumber: "101",
     complaintCategory: "Swimming Pool",
-    complaintDescription: "Water quality needs improvement. The pool water appears cloudy and the chlorine levels seem too high.",
+    complaintDescription:
+      "Water quality needs improvement. The pool water appears cloudy and the chlorine levels seem too high.",
     status: "PENDING",
     timestamp: new Date(2024, 1, 15, 14, 30),
   },
@@ -30,7 +33,8 @@ const sampleComplaints = [
     blockNumber: "B",
     flatNumber: "202",
     complaintCategory: "Electrical",
-    complaintDescription: "Frequent power fluctuations in the apartment causing appliances to malfunction.",
+    complaintDescription:
+      "Frequent power fluctuations in the apartment causing appliances to malfunction.",
     status: "SOLVED",
     timestamp: new Date(2024, 1, 14, 10, 15),
   },
@@ -42,7 +46,8 @@ const sampleComplaints = [
     blockNumber: "C",
     flatNumber: "303",
     complaintCategory: "Parking",
-    complaintDescription: "Unauthorized vehicles constantly parking in my designated spot.",
+    complaintDescription:
+      "Unauthorized vehicles constantly parking in my designated spot.",
     status: "REJECTED",
     timestamp: new Date(2024, 1, 13, 16, 45),
   },
@@ -54,7 +59,8 @@ const sampleComplaints = [
     blockNumber: "C",
     flatNumber: "303",
     complaintCategory: "Parking",
-    complaintDescription: "Unauthorized vehicles constantly parking in my designated spot.",
+    complaintDescription:
+      "Unauthorized vehicles constantly parking in my designated spot.",
     status: "REJECTED",
     timestamp: new Date(2024, 1, 13, 16, 45),
   },
@@ -66,7 +72,8 @@ const sampleComplaints = [
     blockNumber: "C",
     flatNumber: "303",
     complaintCategory: "Parking",
-    complaintDescription: "Unauthorized vehicles constantly parking in my designated spot.",
+    complaintDescription:
+      "Unauthorized vehicles constantly parking in my designated spot.",
     status: "REJECTED",
     timestamp: new Date(2024, 1, 13, 16, 45),
   },
@@ -78,7 +85,8 @@ const sampleComplaints = [
     blockNumber: "C",
     flatNumber: "303",
     complaintCategory: "Parking",
-    complaintDescription: "Unauthorized vehicles constantly parking in my designated spot.",
+    complaintDescription:
+      "Unauthorized vehicles constantly parking in my designated spot.",
     status: "REJECTED",
     timestamp: new Date(2024, 1, 13, 16, 45),
   },
@@ -90,7 +98,8 @@ const sampleComplaints = [
     blockNumber: "C",
     flatNumber: "303",
     complaintCategory: "Parking",
-    complaintDescription: "Unauthorized vehicles constantly parking in my designated spot.",
+    complaintDescription:
+      "Unauthorized vehicles constantly parking in my designated spot.",
     status: "REJECTED",
     timestamp: new Date(2024, 1, 13, 16, 45),
   },
@@ -102,7 +111,8 @@ const sampleComplaints = [
     blockNumber: "C",
     flatNumber: "303",
     complaintCategory: "Parking",
-    complaintDescription: "Unauthorized vehicles constantly parking in my designated spot.",
+    complaintDescription:
+      "Unauthorized vehicles constantly parking in my designated spot.",
     status: "REJECTED",
     timestamp: new Date(2024, 1, 13, 16, 45),
   },
@@ -114,7 +124,8 @@ const sampleComplaints = [
     blockNumber: "C",
     flatNumber: "303",
     complaintCategory: "Parking",
-    complaintDescription: "Unauthorized vehicles constantly parking in my designated spot.",
+    complaintDescription:
+      "Unauthorized vehicles constantly parking in my designated spot.",
     status: "REJECTED",
     timestamp: new Date(2024, 1, 13, 16, 45),
   },
@@ -126,7 +137,8 @@ const sampleComplaints = [
     blockNumber: "C",
     flatNumber: "303",
     complaintCategory: "Parking",
-    complaintDescription: "Unauthorized vehicles constantly parking in my designated spot.",
+    complaintDescription:
+      "Unauthorized vehicles constantly parking in my designated spot.",
     status: "REJECTED",
     timestamp: new Date(2024, 1, 13, 16, 45),
   },
@@ -138,40 +150,41 @@ const sampleComplaints = [
     blockNumber: "C",
     flatNumber: "303",
     complaintCategory: "Parking",
-    complaintDescription: "Unauthorized vehicles constantly parking in my designated spot.",
+    complaintDescription:
+      "Unauthorized vehicles constantly parking in my designated spot.",
     status: "REJECTED",
     timestamp: new Date(2024, 1, 13, 16, 45),
   },
 ];
 
 const complaintCategories = [
-  'All Categories',
-  'Swimming Pool',
-  'Water Supply',
-  'Parking',
-  'Plumbing',
-  'Electrical',
-  'Lift',
-  'House Keeping',
-  'Garbage Collector',
-  'Security',
-  'Clubhouse',
-  'Park',
-  'Generator'
+  "All Categories",
+  "SwimmingPool",
+  "WaterSupply",
+  "Parking",
+  "Plumbing",
+  "Electrical",
+  "Lift",
+  "HouseKeeping",
+  "GarbageCollector",
+  "Security",
+  "Clubhouse",
+  "Park",
+  "Generator",
 ];
 
 const timeFilters = [
-  { label: 'All Time', value: 'all' },
-  { label: 'Last 24 Hours', value: '24h' },
-  { label: 'Last 7 Days', value: '7d' },
-  { label: 'Last 30 Days', value: '30d' },
+  { label: "All Time", value: "all" },
+  { label: "Last 24 Hours", value: "24h" },
+  { label: "Last 7 Days", value: "7d" },
+  { label: "Last 30 Days", value: "30d" },
 ];
 
 const statusFilters = [
-  { label: 'All Status', value: 'all' },
-  { label: 'Pending', value: 'PENDING' },
-  { label: 'Solved', value: 'SOLVED' },
-  { label: 'Rejected', value: 'REJECTED' },
+  { label: "All Status", value: "all" },
+  { label: "Pending", value: "PENDING" },
+  { label: "Solved", value: "SOLVED" },
+  { label: "Rejected", value: "REJECTED" },
 ];
 
 const AdminPanel = () => {
@@ -179,37 +192,51 @@ const AdminPanel = () => {
   const [selectedComplaint, setSelectedComplaint] = useState(null);
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [complaintForReport, setComplaintForReport] = useState({});
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All Categories');
-  const [selectedTime, setSelectedTime] = useState('all');
-  const [selectedStatus, setSelectedStatus] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  const [selectedTime, setSelectedTime] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedNotification, setSelectedNotification] = useState(null);
 
-  const {complaints, setComplaints} = useAdminDashboard();
-  const {darkMode, setDarkMode} = useThemeToggle();
+  const { complaints, setComplaints, admin } = useAdminDashboard();
+  const { darkMode, setDarkMode } = useThemeToggle();
 
   console.log("Complaints in Admin Panel:", complaints);
 
-  const handleStatusChange = async (complaintId, newStatus) => {
+  const handleStatusChange = async (
+    complaintId,
+    newStatus,
+    setIsStatusUpdating
+  ) => {
     console.log(complaintId, "complaintId in handleStatusChange");
     try {
-      const response = await axiosInstance.post('/api/admin/updateStatus', {complaintId, newStatus});
-      if(response.data.success){
+      setIsStatusUpdating(true);
+      const response = await axiosInstance.post("/api/admin/updateStatus", {
+        complaintId,
+        newStatus,
+      });
+      if (response.data.success) {
         toast.success(response.data.message);
-        setComplaints(complaints.map(complaint =>
-          complaint.id === complaintId ? { ...complaint, status: newStatus } : complaint
-        ));
-      }
-      else{
+        setComplaints(
+          complaints.map((complaint) =>
+            complaint.id === complaintId
+              ? { ...complaint, status: newStatus }
+              : complaint
+          )
+        );
+      } else {
         toast.error(response.data.message);
       }
     } catch (error) {
       console.error("Error changing status:", error);
       toast.error("Error changing status");
+    } finally {
+      setIsStatusUpdating(false);
     }
   };
 
   const handleReport = (complaintId, reportType, message) => {
-    console.log('Report Data:', {
+    console.log("Report Data:", {
       complaintId,
       reportType,
       message,
@@ -220,22 +247,27 @@ const AdminPanel = () => {
 
   const filteredComplaints = useMemo(() => {
     return complaints.filter((complaint, index, self) => {
-      const matchesSearch = complaint.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = selectedCategory === 'All Categories' || complaint.complaintCategory === selectedCategory;
-      const matchesStatus = selectedStatus === 'all' || complaint.status === selectedStatus;
-      
+      const matchesSearch = complaint.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const matchesCategory =
+        selectedCategory === "All Categories" ||
+        complaint.complaintCategory === selectedCategory;
+      const matchesStatus =
+        selectedStatus === "all" || complaint.status === selectedStatus;
+
       let matchesTime = true;
       const now = new Date();
       const complaintDate = new Date(complaint.timestamp);
-      
+
       switch (selectedTime) {
-        case '24h':
+        case "24h":
           matchesTime = now - complaintDate <= 24 * 60 * 60 * 1000;
           break;
-        case '7d':
+        case "7d":
           matchesTime = now - complaintDate <= 7 * 24 * 60 * 60 * 1000;
           break;
-        case '30d':
+        case "30d":
           matchesTime = now - complaintDate <= 30 * 24 * 60 * 60 * 1000;
           break;
       }
@@ -248,13 +280,16 @@ const AdminPanel = () => {
   }, [complaints, searchQuery, selectedCategory, selectedStatus, selectedTime]);
   useEffect(() => {
     console.log("Filtered Complaints:", filteredComplaints);
-  }, [filteredComplaints])
+  }, [filteredComplaints]);
+
 
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Complaint Management</h1>
-        <ProfileDropdown darkMode={darkMode} setDarkMode={setDarkMode} />
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          Welcome, <span className="text-blue-600">{admin.name} !</span>
+        </h1>
+        <ProfileDropdown setSelectedNotification={setSelectedNotification} />
       </div>
 
       <div className="mb-6 space-y-4">
@@ -275,8 +310,10 @@ const AdminPanel = () => {
             onChange={(e) => setSelectedCategory(e.target.value)}
             className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
-            {complaintCategories.map(category => (
-              <option key={category} value={category}>{category}</option>
+            {complaintCategories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
             ))}
           </select>
 
@@ -285,8 +322,10 @@ const AdminPanel = () => {
             onChange={(e) => setSelectedTime(e.target.value)}
             className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
-            {timeFilters.map(filter => (
-              <option key={filter.value} value={filter.value}>{filter.label}</option>
+            {timeFilters.map((filter) => (
+              <option key={filter.value} value={filter.value}>
+                {filter.label}
+              </option>
             ))}
           </select>
 
@@ -295,8 +334,10 @@ const AdminPanel = () => {
             onChange={(e) => setSelectedStatus(e.target.value)}
             className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
-            {statusFilters.map(filter => (
-              <option key={filter.value} value={filter.value}>{filter.label}</option>
+            {statusFilters.map((filter) => (
+              <option key={filter.value} value={filter.value}>
+                {filter.label}
+              </option>
             ))}
           </select>
         </div>
@@ -328,6 +369,10 @@ const AdminPanel = () => {
         onSubmit={handleReport}
         complaint={complaintForReport}
         onStatusChange={handleStatusChange}
+      />
+      <NotificationModal
+        notification={selectedNotification}
+        onClose={() => setSelectedNotification(null)}
       />
     </div>
   );
