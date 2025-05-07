@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import { useAdminDashboard } from "../hooks/AdminDashboard";
 import { axiosInstance } from "../utils/axiosInstance";
 import toast from "react-hot-toast";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 
 const ReportModal = ({
   isOpen,
@@ -36,6 +36,27 @@ const ReportModal = ({
       setIsPingLoading(false);
       setMessage("");
     }
+  };
+
+
+
+  
+  const joinGroupWithMessage = () => {
+    // https://web.whatsapp.com/accept?code=Ig1HG8RUrPVC3wbKaj42hk
+    if(message.trim().length == 0){
+      toast.error("Please enter a message.");
+      return;
+    }
+    const groupLink = "https://chat.whatsapp.com/Ig1HG8RUrPVC3wbKaj42hk";
+    let formattedMessage = `*${complaint.complaintCategory}*\n${complaint.subCategory}\n\n*Complaint ID:* ${complaint.id}\n*Name:* ${complaint.name}\n*Phone:* ${complaint.phoneNumber}\n*Email:* ${complaint.emailId}\n*Complained At:* ${format(complaint.timestamp, 'PPpp')}\n*Complain Status:* ${complaint.status}\n\n*Message:* ${message.trim()}\n`;
+    // const groupLink = "https://web.whatsapp.com/accept?code=Ig1HG8RUrPVC3wbKaj42hk";
+    // const message = "Hi everyone! I'm excited to join this group.";
+  
+    navigator.clipboard.writeText(formattedMessage).then(() => {
+      // alert("Message copied! You’ll be redirected to the WhatsApp group.");
+      window.open(groupLink, "_blank");
+      setMessage("");
+    });
   };
   const [currentStatus, setCurrentStatus] = useState(complaint.status);
   const [isLoading, setIsLoading] = useState(false);
@@ -123,7 +144,7 @@ const ReportModal = ({
                   <button
                     type="button"
                     className="flex w-full justify-center rounded-md border border-transparent bg-blue-100 dark:bg-blue-900 px-4 py-2 text-sm font-medium text-blue-900 dark:text-blue-100 hover:bg-blue-200 dark:hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={() => handleSubmit()}
+                    onClick={() => joinGroupWithMessage()}
                   >
                     Broadcast
                   </button>
