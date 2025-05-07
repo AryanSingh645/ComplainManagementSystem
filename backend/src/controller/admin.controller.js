@@ -37,7 +37,7 @@ const registerAdmin = async (req, res) => {
                 access
             }
         })
-        const mailInfo = await sendMail(email, "Welcome to the Admin Panel", "register", name);
+        // const mailInfo = await sendMail(email, "Welcome to the Admin Panel", "register", name);
         const token = jwt.sign({id: newAdmin.id, access: newAdmin.access}, process.env.JWT_SECRET, {expiresIn: "30d"});
         if(!token){
             return res.status(500).json({
