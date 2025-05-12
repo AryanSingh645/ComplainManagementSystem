@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import { AdminDashboardProvider } from "./hooks/AdminDashboard";
+import Loader from "./Loader";
 function App() {
   return (
     <ThemeToggleProvider>
@@ -15,6 +16,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Complain />} />
           </Routes>
+          {/* <Routes>
+            <Route path="/loader" element={<Loader />} />
+          </Routes> */}
           <Routes>
             <Route path="/login" element={<Login />} />
           </Routes>

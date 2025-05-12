@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "./utils/axiosInstance";
 import { useAdminDashboard } from "./hooks/AdminDashboard";
+import Loader from "./Loader";
 
 const ProtectedRoute = ({ children }) => {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -29,7 +30,7 @@ const ProtectedRoute = ({ children }) => {
     };
     verifyUser();
   }, []);
-  return <div>{isLoading ? <p>Loading...</p> : children}</div>;
+  return <div>{isLoading ? <Loader/> : children}</div>;
 };
 
 export default ProtectedRoute;

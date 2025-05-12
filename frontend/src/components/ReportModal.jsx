@@ -47,7 +47,7 @@ const ReportModal = ({
       toast.error("Please enter a message.");
       return;
     }
-    const groupLink = "https://chat.whatsapp.com/Ig1HG8RUrPVC3wbKaj42hk";
+    const groupLink = "https://chat.whatsapp.com/HspPRawGcxCHPfhZqdqlAi";
     let formattedMessage = `*${complaint.complaintCategory}*\n${complaint.subCategory}\n\n*Complaint ID:* ${complaint.id}\n*Name:* ${complaint.name}\n*Phone:* ${complaint.phoneNumber}\n*Email:* ${complaint.emailId}\n*Complained At:* ${format(complaint.timestamp, 'PPpp')}\n*Complain Status:* ${complaint.status}\n\n*Message:* ${message.trim()}\n`;
     // const groupLink = "https://web.whatsapp.com/accept?code=Ig1HG8RUrPVC3wbKaj42hk";
     // const message = "Hi everyone! I'm excited to join this group.";

@@ -3,10 +3,14 @@ import ComplaintForm from '../components/ComplaintForm';
 import NotificationsDropdown from '../components/NotificationsDropdown';
 import NotificationModal from '../components/NotificationModal';
 import { useThemeToggle } from '../hooks/ThemeToggle';
+import { LogIn } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
   const {darkMode, setDarkMode} = useThemeToggle();
   const [selectedNotification, setSelectedNotification] = useState(null);
+
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   if (darkMode) {
@@ -27,14 +31,14 @@ function App() {
             {darkMode ? '🌞' : '🌙'}
           </button>
         </div>
-        <div className="fixed top-4 right-4 z-50">
-          <NotificationsDropdown onNotificationClick={setSelectedNotification} />
+        <div className="fixed top-4 right-4 z-50 hover:bg-slate-600 p-2 rounded-lg hover:text-white">
+          <LogIn onClick={() => {navigate('/admin')}} className='dark:text-white cursor-pointer' />
         </div>
         <ComplaintForm />
-        <NotificationModal
+        {/* <NotificationModal
           notification={selectedNotification}
           onClose={() => setSelectedNotification(null)}
-        />
+        /> */}
       </div>
     </div>
   );

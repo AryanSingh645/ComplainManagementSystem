@@ -5,7 +5,7 @@ import { useThemeToggle } from "../hooks/ThemeToggle";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../utils/axiosInstance";
-import { Bell, User } from "lucide-react";
+import { Bell, LogOutIcon, MoonIcon, SunIcon, User } from "lucide-react";
 import NotificationsDropdown from "./NotificationsDropdown";
 import NotificationModal from "./NotificationModal";
 
@@ -41,7 +41,7 @@ const ProfileDropdown = ({setSelectedNotification}) => {
       >
         <Menu.Items className="absolute right-0 mt-2 w-56 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            <Menu.Item>
+            {/* <Menu.Item>
               {({ active }) => (
                 <button
                   className={`${
@@ -52,7 +52,7 @@ const ProfileDropdown = ({setSelectedNotification}) => {
                   
                 </button>
               )}
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item>
               {({ active }) => (
                 <button
@@ -61,7 +61,15 @@ const ProfileDropdown = ({setSelectedNotification}) => {
                     active ? "bg-gray-100 dark:bg-gray-700" : ""
                   } w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}
                 >
-                  {darkMode ? "🌞 Light Mode" : "🌙 Dark Mode"}
+                  {darkMode ? 
+                    <span className="flex gap-2 items-center">
+                      <SunIcon className="w-5" />
+                      Light Mode
+                    </span> : 
+                    <span className="flex gap-2 items-center">
+                      <MoonIcon className="w-5" />
+                      Dark Mode
+                    </span>}
                 </button>
               )}
             </Menu.Item>
@@ -73,7 +81,10 @@ const ProfileDropdown = ({setSelectedNotification}) => {
                     active ? "bg-gray-100 dark:bg-gray-700" : ""
                   } w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}
                 >
-                  Logout
+                  <span className="flex gap-2 items-center">
+                    <LogOutIcon className="w-5"/>
+                    Logout
+                  </span>
                 </button>
               )}
             </Menu.Item>

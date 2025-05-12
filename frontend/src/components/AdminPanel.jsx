@@ -370,10 +370,10 @@ const AdminPanel = () => {
         complaint={complaintForReport}
         onStatusChange={handleStatusChange}
       />
-      <NotificationModal
+      {/* <NotificationModal
         notification={selectedNotification}
         onClose={() => setSelectedNotification(null)}
-      />
+      /> */}
     </div>
   );
 };
